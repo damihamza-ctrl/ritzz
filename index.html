@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Design Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            /* Dynamic color variables - will be updated by JS */
+            --primary-tone: #8B9A7D;
+            --secondary-tone: #A8B89A;
+            --accent-rose: #C4A7A4;
+            --warm-neutral: #D4C4B0;
+            --light-bg: #F8F6F1;
+            --deep-tone: #6B7B5F;
+            --charcoal: #2C2C2C;
+            --warm-gray: #6B6B6B;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--light-bg);
+            color: var(--charcoal);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .serif { 
+            font-family: 'Cormorant Garamond', serif; 
+            font-weight: 300;
+        }
+        
+        /* Logo - Fixed */
+        .logo-fixed {
+            position: fixed;
+            top: 32px;
+            left: 32px;
+            z-index: 1000;
+            height: 45px;
+            width: auto;
+            filter: brightness(0.2);
+            opacity: 0.9;
+            transition: filter 0.3s ease;
+        }
+        
+        .logo-fixed.light {
+            filter: brightness(0) invert(1);
+        }
+        
+        @media (max-width: 768px) {
+            .logo-fixed { height: 38px; top: 20px; left: 20px; }
+        }
+
+        /* Navigation Dots */
+        .nav-dots {
+            position: fixed;
+            right: 32px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .nav-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        
+        .nav-dot.active {
+            background: var(--primary-tone);
+            transform: scale(1.5);
+        }
+        
+        .nav-dot:hover {
+            background: var(--secondary-tone);
+        }
+
+        /* Hero Section - Full Screen Image */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(to top, rgba(44,44,44,0.6) 0%, transparent 50%),
+                        url('https://i.imgur.com/kxlEQJY.jpeg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 900px;
+            margin-bottom: 40px;
+        }
+
+        .hero-tagline {
+            color: rgba(255,255,255,0.9);
+            font-size: 12px;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        h1 {
+            font-size: clamp(36px, 8vw, 72px);
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: 16px;
+            color: white;
+            letter-spacing: 2px;
+        }
+
+        .hero-subtitle {
+            font-size: 14px;
+            color: rgba(255,255,255,0.8);
+            max-width: 400px;
+            margin: 0 auto;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .designer-credit {
+            position: absolute;
+            bottom: 32px;
+            right: 32px;
+            text-align: right;
+            z-index: 50;
+        }
+        
+        @media (max-width: 768px) {
+            .designer-credit { 
+                bottom: 20px; 
+                right: 20px;
+                left: 20px;
+                text-align: center;
+            }
+        }
+
+        .designer-credit p:first-child {
+            color: rgba(255,255,255,0.7);
+            font-size: 9px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+
+        .designer-credit p:last-child {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 20px;
+            color: white;
+            font-weight: 400;
+        }
+
+        /* Sections */
+        section {
+            padding: 100px 24px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-label {
+            color: var(--primary-tone);
+            font-size: 10px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+
+        h2 {
+            font-size: clamp(28px, 4vw, 48px);
+            font-weight: 300;
+            color: var(--charcoal);
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .concept-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(20px, 2.5vw, 26px);
+            font-weight: 300;
+            line-height: 1.6;
+            color: var(--warm-gray);
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        /* Dynamic Color Palette */
+        .colors-simple {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        .color-item {
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .color-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .color-circle {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            margin-bottom: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            border: 3px solid white;
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .color-circle::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 50%);
+        }
+
+        .color-item:hover .color-circle {
+            transform: scale(1.1);
+        }
+
+        .color-name-simple {
+            font-size: 10px;
+            color: var(--charcoal);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .color-hex-simple {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 11px;
+            color: var(--warm-gray);
+            letter-spacing: 1px;
+        }
+
+        /* Editorial Gallery Layout */
+        .gallery-editorial {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        @media (min-width: 768px) {
+            .gallery-editorial { 
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .gallery-editorial { 
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .editorial-card {
+            position: relative;
+            background: var(--warm-neutral);
+            overflow: hidden;
+            aspect-ratio: 4/5;
+            cursor: pointer;
+        }
+
+        .editorial-card.featured {
+            aspect-ratio: 3/4;
+        }
+
+        @media (min-width: 768px) {
+            .editorial-card:nth-child(1) { grid-column: span 2; aspect-ratio: 16/9; }
+            .editorial-card:nth-child(4) { grid-column: span 2; aspect-ratio: 16/9; }
+            .editorial-card:nth-child(7) { grid-column: span 2; aspect-ratio: 16/9; }
+            .editorial-card:nth-child(10) { grid-column: span 2; aspect-ratio: 16/9; }
+        }
+
+        .editorial-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+            filter: saturate(0.9) contrast(1.05);
+        }
+
+        .editorial-card:hover img {
+            transform: scale(1.05);
+            filter: saturate(1.1) contrast(1.05);
+        }
+
+        .editorial-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 30px;
+            background: linear-gradient(to top, rgba(44,44,44,0.8) 0%, transparent 100%);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .editorial-card:hover .editorial-caption {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .caption-label {
+            color: rgba(255,255,255,0.8);
+            font-size: 9px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .caption-title {
+            font-family: 'Cormorant Garamond', serif;
+            color: white;
+            font-size: 22px;
+            font-weight: 300;
+            font-style: italic;
+        }
+
+        /* Footer */
+        footer {
+            padding: 80px 24px;
+            background: var(--deep-tone);
+            text-align: center;
+            position: relative;
+            color: white;
+        }
+
+        .footer-logo {
+            height: 45px;
+            width: auto;
+            filter: brightness(0) invert(1);
+            opacity: 0.9;
+            margin-bottom: 32px;
+        }
+
+        .footer-tagline {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(28px, 5vw, 48px);
+            margin-bottom: 16px;
+            font-weight: 300;
+            font-style: italic;
+            color: white;
+        }
+        
+        .footer-subtext {
+            color: rgba(255,255,255,0.7);
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 32px;
+            font-weight: 400;
+        }
+
+        .footer-designer p:first-child {
+            color: rgba(255,255,255,0.6);
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .footer-designer p:last-child {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 24px;
+            color: white;
+        }
+
+        .footer-role {
+            color: rgba(255,255,255,0.5);
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 24px;
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--primary-tone);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 0;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 1000;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* Image color analyzer overlay */
+        .color-extractor {
+            position: fixed;
+            top: 32px;
+            right: 32px;
+            background: rgba(255,255,255,0.95);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            z-index: 1001;
+            max-width: 250px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .color-extractor h3 {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            color: var(--charcoal);
+            font-weight: 600;
+        }
+
+        .extracted-color {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-size: 11px;
+        }
+
+        .extracted-color-box {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        @media (max-width: 768px) {
+            .color-extractor {
+                display: none;
+            }
+        }
+
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 32px;
+            right: 32px;
+            color: white;
+            font-size: 32px;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .lightbox-close:hover {
+            background: rgba(255,255,255,0.1);
+            transform: rotate(90deg);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Fixed Logo -->
+    <img src="https://i.imgur.com/uJqy10F.jpeg" alt="Logo" class="logo-fixed" id="mainLogo">
+
+    <!-- Color Extractor Panel -->
+    <div class="color-extractor" id="colorExtractor">
+        <h3>Image Palette</h3>
+        <div id="extractedColors"></div>
+    </div>
+
+    <!-- Navigation Dots -->
+    <div class="nav-dots">
+        <div class="nav-dot active" onclick="scrollToSection(0)"></div>
+        <div class="nav-dot" onclick="scrollToSection(1)"></div>
+        <div class="nav-dot" onclick="scrollToSection(2)"></div>
+    </div>
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="section-0" style="padding: 0; max-width: 100%;">
+        <div class="hero-content">
+            <p class="hero-tagline fade-in">Wedding Design Portfolio</p>
+            
+            <h1 class="fade-in serif" style="transition-delay: 0.2s;">
+                Timeless Elegance
+            </h1>
+            
+            <p class="hero-subtitle fade-in" style="transition-delay: 0.4s;">
+                Capturing moments of grace, beauty, and refined celebration
+            </p>
+        </div>
+        
+        <div class="designer-credit fade-in" style="transition-delay: 0.6s;">
+            <p>Curated by</p>
+            <p>Design Studio</p>
+        </div>
+    </section>
+
+    <!-- CONCEPT & PALETTE -->
+    <section id="section-1">
+        <div class="section-header">
+            <p class="section-label fade-in">Design Philosophy</p>
+            <h2 class="fade-in serif">Natural Harmony</h2>
+            <p class="concept-text fade-in">
+                A curated collection celebrating the interplay of light, texture, and emotion. Each moment captured reflects the authentic beauty of celebration.
+            </p>
+        </div>
+
+        <div class="colors-simple" style="margin-top: 60px;" id="colorPalette">
+            <div class="color-item fade-in" onclick="copyColor('#8B9A7D')">
+                <div class="color-circle" style="background: #8B9A7D;" id="color1"></div>
+                <p class="color-name-simple">Sage</p>
+                <p class="color-hex-simple">#8B9A7D</p>
+            </div>
+            
+            <div class="color-item fade-in" onclick="copyColor('#A8B89A')" style="transition-delay: 0.1s;">
+                <div class="color-circle" style="background: #A8B89A;" id="color2"></div>
+                <p class="color-name-simple">Moss</p>
+                <p class="color-hex-simple">#A8B89A</p>
+            </div>
+            
+            <div class="color-item fade-in" onclick="copyColor('#C4A7A4')" style="transition-delay: 0.2s;">
+                <div class="color-circle" style="background: #C4A7A4;" id="color3"></div>
+                <p class="color-name-simple">Blush</p>
+                <p class="color-hex-simple">#C4A7A4</p>
+            </div>
+            
+            <div class="color-item fade-in" onclick="copyColor('#D4C4B0')" style="transition-delay: 0.3s;">
+                <div class="color-circle" style="background: #D4C4B0;" id="color4"></div>
+                <p class="color-name-simple">Sand</p>
+                <p class="color-hex-simple">#D4C4B0</p>
+            </div>
+
+            <div class="color-item fade-in" onclick="copyColor('#F8F6F1')" style="transition-delay: 0.4s;">
+                <div class="color-circle" style="background: #F8F6F1;" id="color5"></div>
+                <p class="color-name-simple">Ivory</p>
+                <p class="color-hex-simple">#F8F6F1</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section id="section-2" style="padding: 0; max-width: 100%;">
+        <div class="gallery-editorial">
+            <div class="editorial-card featured fade-in" onclick="openLightbox('https://i.imgur.com/kxlEQJY.jpeg')">
+                <img src="https://i.imgur.com/kxlEQJY.jpeg" alt="Wedding Moment" loading="lazy" crossorigin="anonymous" id="img1">
+                <div class="editorial-caption">
+                    <p class="caption-label">The Collection</p>
+                    <p class="caption-title">Opening Moment</p>
+                </div>
+            </div>
+            
+            <div class="editorial-card fade-in" style="transition-delay: 0.1s;" onclick="openLightbox('https://i.imgur.com/XAH2R6Q.jpeg')">
+                <img src="https://i.imgur.com/XAH2R6Q.jpeg" alt="Wedding Details" loading="lazy" crossorigin="anonymous" id="img2">
+                <div class="editorial-caption">
+                    <p class="caption-title">Intimate Details</p>
+                </div>
+            </div>
+            
+            <div class="editorial-card fade-in" style="transition-delay: 0.2s;" onclick="openLightbox('https://i.imgur.com/XJq1MG2.jpeg')">
+                <img src="https://i.imgur.com/XJq1MG2.jpeg" alt="Wedding Beauty" loading="lazy" crossorigin="anonymous" id="img3">
+                <div class="editorial-caption">
+                    <p class="caption-title">Natural Light</p>
+                </div>
+            </div>
+            
+            <div class="editorial-card featured fade-in" style="transition-delay: 0.1s;" onclick="openLightbox('https://i.imgur.com/JxEMUbe.jpeg')">
+                <img src="https://i.imgur.com/JxEMUbe.jpeg" alt="Wedding Scene" loading="lazy" crossorigin="anonymous" id="img4">
+                <div class="editorial-caption">
+                    <p class="caption-label">The Atmosphere</p>
+                    <p class="caption-title">Garden Serenity</p>
+                </div>
+            </div>
+            
+            <div class="editorial-card fade-in" style="transition-delay: 0.2s;" onclick="openLightbox('https://i.imgur.com/dkmUVRb.jpeg')">
+                <img src="https://i.imgur.com/dkmUVRb.jpeg" alt="Wedding Romance" loading="lazy" crossorigin="anonymous" id="img5">
+                <div class="editorial-caption">
+                    <p class="caption-title">Soft Romance</p>
+                </div>
+            </div>
+            
+            <div class="editorial-card fade-in" style="transition-delay: 0.3s;" onclick="openLightbox('https://i.imgur.com/rb1gi4r.jpeg')">
+                <img src="https://i.imgur.com/rb1gi4r.jpeg" alt="Wedding Light" loading="lazy" crossorigin="anonymous" id="img6">
+                <div class="editorial-caption">
+                    <p class="caption-title">Golden Moments</p>
+                </div>
+            </div>
+            
+            <div class="editorial-card featured fade-in" style="transition-delay: 0.1s;" onclick="openLightbox('https://i.imgur.com/KxqtZDH.jpeg')">
+                <img src="https://i.imgur.com/KxqtZDH.jpeg" alt="Wedding Details" loading="lazy" crossorigin="anonymous" id="img7">
+                <div class="editorial-caption">
+                    <p class="caption-label">The Composition</p>
+                    <p class="caption-title">Artful Arrangement</p>
+                </div>
+            </div>
+            
+            <div class="editorial-card fade-in" style="transition-delay: 0.2s;" onclick="openLightbox('https://i.imgur.com/TBETplH.jpeg')">
+                <img src="https://i.imgur.com/TBETplH.jpeg" alt="Wedding Joy" loading="lazy" crossorigin="anonymous" id="img8">
+                <div class="editorial-caption">
+                    <p class="caption-title">Pure Joy</p>
+                </div>
+            </div>
+            
+            <div class="editorial-card fade-in" style="transition-delay: 0.3s;" onclick="openLightbox('https://i.imgur.com/GUKuqAj.jpeg')">
+                <img src="https://i.imgur.com/GUKuqAj.jpeg" alt="Wedding Serenity" loading="lazy" crossorigin="anonymous" id="img9">
+                <div class="editorial-caption">
+                    <p class="caption-title">Quiet Beauty</p>
+                </div>
+            </div>
+            
+            <div class="editorial-card featured fade-in" style="transition-delay: 0.1s;" onclick="openLightbox('https://i.imgur.com/vG8CLZ4.jpeg')">
+                <img src="https://i.imgur.com/vG8CLZ4.jpeg" alt="Wedding Celebration" loading="lazy" crossorigin="anonymous" id="img10">
+                <div class="editorial-caption">
+                    <p class="caption-label">The Celebration</p>
+                    <p class="caption-title">Shared Happiness</p>
+                </div>
+            </div>
+            
+            <div class="editorial-card fade-in" style="transition-delay: 0.2s;" onclick="openLightbox('https://i.imgur.com/RGWRr97.jpeg')">
+                <img src="https://i.imgur.com/RGWRr97.jpeg" alt="Wedding Magic" loading="lazy" crossorigin="anonymous" id="img11">
+                <div class="editorial-caption">
+                    <p class="caption-title">Evening Magic</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <img src="https://i.imgur.com/uJqy10F.jpeg" alt="Logo" class="footer-logo">
+        
+        <p class="footer-tagline serif">Crafted with Care</p>
+        <p class="footer-subtext">Wedding Design & Photography</p>
+        
+        <div class="footer-designer">
+            <p>Designed by</p>
+            <p>Creative Studio</p>
+        </div>
+        
+        <p class="footer-role">Visual Storytelling</p>
+    </footer>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <div class="lightbox-close">&times;</div>
+        <img src="" alt="Full size" id="lightboxImg">
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">Color copied</div>
+
+    <!-- Scripts -->
+    <script>
+        // Scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Copy color function
+        function copyColor(hex) {
+            navigator.clipboard.writeText(hex).then(() => {
+                const toast = document.getElementById('toast');
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 2000);
+            });
+        }
+
+        // Navigation dots
+        const sections = document.querySelectorAll('section');
+        const dots = document.querySelectorAll('.nav-dot');
+        
+        function scrollToSection(index) {
+            sections[index].scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Update active dot on scroll
+        window.addEventListener('scroll', () => {
+            let current = 0;
+            sections.forEach((section, index) => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 500) {
+                    current = index;
+                }
+            });
+            
+            dots.forEach((dot, index) => {
+                if (index === current) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+            
+            // Logo color change based on background
+            const logo = document.getElementById('mainLogo');
+            if (current === 0 || current === 2) {
+                logo.classList.add('light');
+            } else {
+                logo.classList.remove('light');
+            }
+        });
+
+        // Lightbox functions
+        function openLightbox(src) {
+            const lightbox = document.getElementById('lightbox');
+            const img = document.getElementById('lightboxImg');
+            img.src = src;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Color extraction from images
+        function extractColors() {
+            const images = document.querySelectorAll('.editorial-card img');
+            const colorMap = new Map();
+            
+            images.forEach((img, index) => {
+                if (index > 5) return; // Limit to first 6 images
+                
+                try {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = 50;
+                    canvas.height = 50;
+                    
+                    ctx.drawImage(img, 0, 0, 50, 50);
+                    const imageData = ctx.getImageData(0, 0, 50, 50).data;
+                    
+                    // Sample pixels
+                    for (let i = 0; i < imageData.length; i += 4 * 10) {
+                        const r = imageData[i];
+                        const g = imageData[i + 1];
+                        const b = imageData[i + 2];
+                        
+                        // Skip white, black, and gray
+                        const max = Math.max(r, g, b);
+                        const min = Math.min(r, g, b);
+                        if (max - min < 20) continue;
+                        if (max > 240 && min > 240) continue;
+                        if (max < 20 && min < 20) continue;
+                        
+                        const hex = '#' + [r, g, b].map(x => {
+                            const hex = x.toString(16);
+                            return hex.length === 1 ? '0' + hex : hex;
+                        }).join('');
+                        
+                        colorMap.set(hex, (colorMap.get(hex) || 0) + 1);
+                    }
+                } catch (e) {
+                    console.log('Could not extract from image', index);
+                }
+            });
+            
+            // Get top colors
+            const sortedColors = Array.from(colorMap.entries())
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 5);
+            
+            // Update UI with extracted colors
+            const container = document.getElementById('extractedColors');
+            sortedColors.forEach(([color, count]) => {
+                const div = document.createElement('div');
+                div.className = 'extracted-color';
+                div.innerHTML = `
+                    <div class="extracted-color-box" style="background: ${color}"></div>
+                    <span>${color}</span>
+                `;
+                container.appendChild(div);
+            });
+            
+            // Update palette circles if we got colors
+            if (sortedColors.length >= 3) {
+                for (let i = 0; i < Math.min(5, sortedColors.length); i++) {
+                    const circle = document.getElementById(`color${i+1}`);
+                    const hex = sortedColors[i][0];
+                    if (circle) {
+                        circle.style.background = hex;
+                        circle.parentElement.onclick = () => copyColor(hex);
+                        circle.parentElement.querySelector('.color-hex-simple').textContent = hex;
+                    }
+                }
+            }
+        }
+
+        // Run color extraction after images load
+        window.addEventListener('load', () => {
+            setTimeout(extractColors, 1000);
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+        });
+    </script>
+
+</body>
+</html>
